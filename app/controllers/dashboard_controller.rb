@@ -88,7 +88,13 @@ class DashboardController < ActionController::Base
     methods = ['email']
     methods << 'google_oauth' if GlobalConfigService.load('ENABLE_GOOGLE_OAUTH_LOGIN', 'true').to_s != 'false'
     methods << 'saml' if ChatwootHub.pricing_plan != 'community' && GlobalConfigService.load('ENABLE_SAML_SSO_LOGIN', 'true').to_s != 'false'
+    methods << 'oidc' if oidc_login_enabled?
     methods
+  end
+
+  def oidc_login_enabled?
+    ENV['OIDC_ISSUER'].present? &&
+      GlobalConfigService.load('ENABLE_OIDC_LOGIN', 'true').to_s != 'false'
   end
 
   def set_application_pack

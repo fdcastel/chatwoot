@@ -36,6 +36,9 @@
       "API": {
         "ERROR_MESSAGE": "SSO authentication failed. Please check your credentials and try again."
       }
+    },
+    "OIDC": {
+      "BUTTON": "Sign in with {provider}"
     }
   }
 }

@@ -7,6 +7,10 @@ class DeviseOverrides::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCa
     @resource.present? ? sign_in_user : sign_up_user
   end
 
+  def openid_connect
+    omniauth_success
+  end
+
   private
 
   def sign_in_user
