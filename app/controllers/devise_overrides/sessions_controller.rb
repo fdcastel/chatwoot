@@ -13,6 +13,7 @@ class DeviseOverrides::SessionsController < DeviseTokenAuth::SessionsController
     return handle_sso_authentication if sso_authentication_request?
 
     user = find_user_for_authentication
+    return if performed?
     return handle_mfa_required(user) if user&.mfa_enabled?
 
     # Only proceed with standard authentication if no MFA is required
