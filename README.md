@@ -1,14 +1,14 @@
-# Chatwoot — Custom Fork
+# Chatwoot — Custom Internal Fork
 
 > **Internal use only.** This is a custom fork of the official [Chatwoot](https://github.com/chatwoot/chatwoot) project maintained for internal deployment purposes.
 
-The upstream project is an open-source customer support platform offering live-chat, e-mail, and omni-channel conversation management. 
+## Official Project
 
 Refer to the [official repository](https://github.com/chatwoot/chatwoot) for general documentation, deployment guides, and community resources.
 
 ## About this fork
 
-This fork is based on [Chatwoot v4.12.1](https://github.com/chatwoot/chatwoot/releases/tag/v4.12.1) and adds a small set of features that are not (yet) part of upstream.
+This fork is based on [Chatwoot v4.12.1](https://github.com/chatwoot/chatwoot/releases/tag/v4.12.1).
 
 Each added feature is documented in the [`docs/`](docs/) folder:
 
@@ -16,6 +16,12 @@ Each added feature is documented in the [`docs/`](docs/) folder:
 |---------|----------|
 | Instance-wide OIDC SSO Login | [docs/FEATURE_OIDC_SSO_LOGIN.md](docs/FEATURE_OIDC_SSO_LOGIN.md) |
 
-## License
+## Custom Docker Images
 
-This fork inherits the license of the original project. See [LICENSE](LICENSE) for details.
+Custom Docker images are built automatically on every push to this branch and published to the [GitHub Container Registry](https://github.com/fdcastel?tab=packages) under the `fdcastel` namespace:
+
+| Image | Pull command |
+| ----- | ------------ |
+| chatwoot | `docker pull ghcr.io/fdcastel/chatwoot` |
+
+Images are tagged with the upstream release version (e.g. `v4.12.1`) and `latest`.
