@@ -48,10 +48,10 @@ RSpec.describe 'OIDC OmniAuth Callbacks', type: :request do
             instance_double(Account::SignUpEmailValidationService, perform: true)
           )
 
-          expect {
+          expect do
             get '/omniauth/openid_connect/callback'
             follow_redirect!
-          }.to change(User, :count).by(1)
+          end.to change(User, :count).by(1)
         end
       end
     end
