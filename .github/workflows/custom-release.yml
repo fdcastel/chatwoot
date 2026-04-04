@@ -120,7 +120,15 @@ jobs:
             exit 0
           fi
 
-          files=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" || true)
+          # On force-push/rebase the old 'before' commit may no longer exist in the remote;
+          # treat that as a code change and always build
+          if ! git cat-file -e "${{ github.event.before }}" 2>/dev/null; then
+            echo "Force-push detected: before commit unreachable, assuming code changes"
+            echo "only_docs=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          files=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}")
           echo "Changed files: $files"
           only_docs=true
           for f in $files; do
