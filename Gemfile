@@ -180,6 +180,7 @@ gem 'audited', '~> 5.4', '>= 5.4.1'
 gem 'omniauth', '>= 2.1.2'
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2', '>= 1.1.3'
+gem 'omniauth_openid_connect', '~> 0.8'
 gem 'omniauth-rails_csrf_protection', '~> 1.0', '>= 1.0.2'
 
 ## Gems for reponse bot

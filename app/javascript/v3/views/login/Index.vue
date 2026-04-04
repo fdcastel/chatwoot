@@ -13,6 +13,7 @@ import { useBranding } from 'shared/composables/useBranding';
 import SimpleDivider from '../../components/Divider/SimpleDivider.vue';
 import FormInput from '../../components/Form/Input.vue';
 import GoogleOAuthButton from '../../components/GoogleOauth/Button.vue';
+import OidcLoginButton from '../../components/OidcLogin/Button.vue';
 import Spinner from 'shared/components/Spinner.vue';
 import Icon from 'dashboard/components-next/icon/Icon.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
@@ -31,6 +32,7 @@ export default {
   components: {
     FormInput,
     GoogleOAuthButton,
+    OidcLoginButton,
     Spinner,
     NextButton,
     SimpleDivider,
@@ -98,6 +100,18 @@ export default {
     },
     showSamlLogin() {
       return this.allowedLoginMethods.includes('saml');
+    },
+    showOidcLogin() {
+      return (
+        this.allowedLoginMethods.includes('oidc') &&
+        Boolean(window.chatwootConfig.oidcIssuer)
+      );
+    },
+    oidcDisplayName() {
+      return window.chatwootConfig.oidcDisplayName || 'SSO';
+    },
+    oidcIconUrl() {
+      return window.chatwootConfig.oidcIconUrl || '';
     },
   },
   created() {
@@ -280,8 +294,13 @@ export default {
               </span>
             </router-link>
           </div>
+          <OidcLoginButton
+            v-if="showOidcLogin"
+            :display-name="oidcDisplayName"
+            :icon-url="oidcIconUrl"
+          />
           <SimpleDivider
-            v-if="showGoogleOAuth || showSamlLogin"
+            v-if="showGoogleOAuth || showSamlLogin || showOidcLogin"
             :label="$t('COMMON.OR')"
             class="uppercase"
           />

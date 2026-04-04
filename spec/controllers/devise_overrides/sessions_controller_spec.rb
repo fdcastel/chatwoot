@@ -151,6 +151,28 @@ RSpec.describe DeviseOverrides::SessionsController, type: :controller do
         expect(response).to have_http_status(:unauthorized)
       end
     end
+
+    context 'when user has OIDC provider' do
+      let(:oidc_user) { create(:user, password: 'Test@123456', provider: 'openid_connect') }
+
+      it 'blocks password login and returns OIDC error' do
+        post :create, params: { email: oidc_user.email, password: 'Test@123456' }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.parsed_body['error']).to eq(I18n.t('errors.signin.use_oidc_login'))
+      end
+
+      it 'allows SSO token login for OIDC users' do
+        sso_token = oidc_user.generate_sso_auth_token
+
+        post :create, params: {
+          email: oidc_user.email,
+          sso_auth_token: sso_token
+        }
+
+        expect(response).to have_http_status(:success)
+      end
+    end
   end
 
   describe 'GET #new' do

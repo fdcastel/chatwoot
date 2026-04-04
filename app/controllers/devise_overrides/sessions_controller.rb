@@ -11,6 +11,7 @@ class DeviseOverrides::SessionsController < DeviseTokenAuth::SessionsController
   def create
     return handle_mfa_verification if mfa_verification_request?
     return handle_sso_authentication if sso_authentication_request?
+    return if oidc_user_attempting_password_auth?
 
     user = find_user_for_authentication
     return handle_mfa_required(user) if user&.mfa_enabled?
@@ -30,10 +31,21 @@ class DeviseOverrides::SessionsController < DeviseTokenAuth::SessionsController
 
     normalized_email = params[:email].strip.downcase
     user = User.from_email(normalized_email)
+
     return nil unless user&.valid_password?(params[:password])
     return nil unless user.active_for_authentication?
 
     user
+  end
+
+  def oidc_user_attempting_password_auth?
+    return false unless params[:email].present? && params[:password].present?
+
+    user = User.from_email(params[:email].strip.downcase)
+    return false unless user&.provider == 'openid_connect'
+
+    render json: { error: I18n.t('errors.signin.use_oidc_login') }, status: :unprocessable_entity
+    true
   end
 
   def mfa_verification_request?

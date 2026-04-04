@@ -69,6 +69,8 @@ en:
     saml:
       feature_not_enabled: SAML feature not enabled for this account
       sso_not_enabled: SAML SSO is not enabled for this installation
+    signin:
+      use_oidc_login: This account uses OIDC single sign-on. Please use the OIDC login option instead.
     data_import:
       data_type:
         invalid: Invalid data type

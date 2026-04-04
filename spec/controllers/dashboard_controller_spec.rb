@@ -39,4 +39,38 @@ describe '/app/login', type: :request do
       Rails.application.reload_routes!
     end
   end
+
+  describe 'allowed_login_methods' do
+    context 'when OIDC is configured' do
+      it 'includes oidc in allowed login methods' do
+        with_modified_env OIDC_ISSUER: 'https://auth.example.com' do
+          get '/app/login'
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include('"oidc"')
+        end
+      end
+    end
+
+    context 'when OIDC is not configured' do
+      it 'does not include oidc in allowed login methods' do
+        with_modified_env OIDC_ISSUER: '' do
+          get '/app/login'
+          expect(response).to have_http_status(:success)
+          expect(response.body).not_to include('"oidc"')
+        end
+      end
+    end
+
+    context 'when OIDC is configured but ENABLE_OIDC_LOGIN is false' do
+      it 'does not include oidc in allowed login methods' do
+        with_modified_env OIDC_ISSUER: 'https://auth.example.com' do
+          allow(GlobalConfigService).to receive(:load).and_call_original
+          allow(GlobalConfigService).to receive(:load).with('ENABLE_OIDC_LOGIN', 'true').and_return('false')
+          get '/app/login'
+          expect(response).to have_http_status(:success)
+          expect(response.body).not_to include('"oidc"')
+        end
+      end
+    end
+  end
 end

@@ -17,7 +17,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
+          bundler: '2.5.16'
+          bundler-cache: false
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
       - name: Run Rubocop
         run: bundle exec rubocop --parallel
 
@@ -90,7 +93,11 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
+          bundler: '2.5.16'
+          bundler-cache: false
+
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
 
       - uses: actions/setup-node@v4
         with:

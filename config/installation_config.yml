@@ -479,6 +479,15 @@
   type: boolean
 ## ------ End of Configs added for SAML SSO ------ ##
 
+## ------ Configs added for OIDC SSO ------ ##
+- name: ENABLE_OIDC_LOGIN
+  display_title: 'Enable OIDC SSO login'
+  value: true
+  locked: false
+  description: 'Show OIDC SSO as a login option when OIDC_ISSUER is configured'
+  type: boolean
+## ------ End of Configs added for OIDC SSO ------ ##
+
 ## ------ Configs added for Cloudflare ------ ##
 - name: CLOUDFLARE_API_KEY
   display_title: 'Cloudflare API Key'
